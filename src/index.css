@@ -12,6 +12,30 @@ body {
 * { -webkit-tap-highlight-color: transparent; }
 ::selection { background: #e8e6e1; color: #000; }
 
-/* Прячем полосы прокрутки у горизонтальных лент фильтров */
+/* Тонкие рамки (единый цвет линий по всему интерфейсу) */
+.brd  { border: 1px solid rgba(255,255,255,.07); }
+.brd2 { border: 1px solid rgba(255,255,255,.12); }
+
+/* Прячем полосы прокрутки у горизонтальных лент */
 .no-bar::-webkit-scrollbar { display: none; }
 .no-bar { scrollbar-width: none; }
+
+/* Анимации появления */
+.fade-in { animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.sheet-in { animation: sheetIn .34s cubic-bezier(.2,.85,.2,1); }
+@keyframes sheetIn { from { transform: translateY(18px); opacity: .4; } to { transform: none; opacity: 1; } }
+
+/* Перетаскивание */
+.drag-ghost {
+  position: fixed; z-index: 90; pointer-events: none; opacity: .95;
+  transform: rotate(1.5deg) scale(1.02);
+  box-shadow: 0 22px 50px -12px rgba(0,0,0,.7);
+  width: var(--gw);
+}
+.dragging-src { opacity: .32; }
+.col-over { background: rgba(255,255,255,.025); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in, .sheet-in { animation: none; }
+}
