@@ -26,8 +26,8 @@ export default function Detail({ taskId, isNew, store, categories, onClose }) {
   const doneCount = subs.filter((s) => s.done).length;
 
   const patch = (p) => { if (isNew) setDraft((d) => ({ ...d, ...p })); else api.updateTask(taskId, p); };
-  const addTag = (v) => { v = v.trim().replace(/^#/, ''); if (!v || t.tags.includes(v)) return; patch({ tags: [...t.tags, v] }); setTagInput(''); };
-  const rmTag = (v) => patch({ tags: t.tags.filter((x) => x !== v) });
+  const addTag = (v) => { v = v.trim().replace(/^#/, ''); const cur = t.tags || []; if (!v || cur.includes(v)) return; patch({ tags: [...cur, v] }); setTagInput(''); };
+  const rmTag = (v) => patch({ tags: (t.tags || []).filter((x) => x !== v) });
 
   const save = async () => { if (!draft.title.trim()) { onClose(); return; } await api.createTask(draft); onClose(); };
   const fld = 'w-full bg-panel2 brd rounded-xl px-3.5 py-2.5 text-[14.5px] text-cream placeholder:text-dim focus:outline-none focus:border-white/20 transition';
@@ -42,7 +42,7 @@ export default function Detail({ taskId, isNew, store, categories, onClose }) {
         <div className="sm:hidden flex justify-center pt-2.5 pb-1"><span className="w-10 h-1 rounded-full bg-white/15" /></div>
 
         <div className="sticky top-0 z-10 flex items-center gap-2 px-4 sm:px-5 py-3 bg-ink/95 sm:bg-panel/95 backdrop-blur border-b border-white/[.06]">
-          <span className="inline-flex items-center gap-1.5 text-[12px] text-muted"><StatusDot s={t.status} size={8} />{STATUS[t.status].label}</span>
+          <span className="inline-flex items-center gap-1.5 text-[12px] text-muted"><StatusDot s={t.status} size={8} />{(STATUS[t.status] || STATUS.pending).label}</span>
           <span className="flex-1" />
           {isNew && <button onClick={save} className="text-[13px] font-semibold px-3.5 py-1.5 rounded-full bg-cream text-black hover:opacity-90">Создать</button>}
           <button onClick={onClose} className="w-8 h-8 grid place-items-center rounded-full text-muted hover:text-cream hover:bg-white/5"><I.x width="18" height="18" /></button>
@@ -75,7 +75,7 @@ export default function Detail({ taskId, isNew, store, categories, onClose }) {
 
           <Section title="Теги">
             <div className="flex flex-wrap gap-2 items-center">
-              {t.tags.map((tg) => <span key={tg} className="inline-flex items-center gap-1.5 font-mono text-[12px] text-muted bg-panel2 brd rounded-md pl-2 pr-1 py-1">#{tg}<button onClick={() => rmTag(tg)} className="text-dim hover:text-danger"><I.x width="13" height="13" /></button></span>)}
+              {(t.tags || []).map((tg) => <span key={tg} className="inline-flex items-center gap-1.5 font-mono text-[12px] text-muted bg-panel2 brd rounded-md pl-2 pr-1 py-1">#{tg}<button onClick={() => rmTag(tg)} className="text-dim hover:text-danger"><I.x width="13" height="13" /></button></span>)}
               <input value={tagInput} onChange={(e) => setTagInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag(tagInput); } }} placeholder="+ тег" className="bg-transparent text-[13px] text-cream placeholder:text-dim focus:outline-none w-20 py-1" />
             </div>
           </Section>
