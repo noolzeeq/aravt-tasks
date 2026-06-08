@@ -148,7 +148,7 @@ function Workspace({ email }) {
 
   return (
     <div className="min-h-screen">
-      <div className={(view === 'board' ? 'max-w-[1180px]' : 'max-w-[680px]') + ' mx-auto px-[15px] sm:px-5 pb-28'}>
+      <div className={(view === 'board' ? 'max-w-[1320px]' : 'max-w-[680px]') + ' mx-auto px-[15px] sm:px-5 pb-28'}>
         {/* ШАПКА */}
         <header className="sticky top-0 z-30 pt-4 pb-3" style={{ background: 'linear-gradient(#0e0e10 78%,rgba(14,14,16,0))' }}>
           <div className="flex items-center justify-between gap-3">
@@ -227,7 +227,7 @@ function Workspace({ email }) {
         ) : (
           <div className="mt-4 flex gap-3 overflow-x-auto no-bar pb-2 -mx-[15px] px-[15px] sm:mx-0 sm:px-0">
             {STATUS_ORDER.map((col) => { const items = filtered.filter((t) => t.status === col); return (
-              <div key={col} data-col={col} className="flex-none w-[270px] sm:w-[300px] bg-panel/40 brd rounded-2xl p-2.5 transition self-start min-h-[120px]">
+              <div key={col} data-col={col} className="flex-none w-[270px] sm:flex-1 sm:w-auto sm:min-w-[220px] bg-panel/40 brd rounded-2xl p-2.5 transition self-start min-h-[120px]">
                 <div className="flex items-center gap-2 px-1.5 py-1.5 mb-1"><StatusDot s={col} size={8} /><h2 className="text-[13px] font-semibold tracking-tight">{STATUS[col].label}</h2><span className="font-mono text-[11px] text-dim ml-auto tabular-nums">{items.length}</span></div>
                 <div className="flex flex-col gap-2.5 min-h-[40px]">{items.map((t) => <div key={t.id} data-card={t.id}>{cardFor(t)}</div>)}
                   {items.length === 0 && <div className="text-center text-[12px] text-dim py-6 brd border-dashed rounded-xl">перетащите сюда</div>}
